@@ -23,10 +23,7 @@
             --dim-text: #888;
         }
 
-        * { 
-            box-sizing: border-box; margin: 0; padding: 0; 
-            cursor: none !important; 
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         html, body {
             width: 100%;
@@ -39,46 +36,43 @@
             overflow-x: hidden;
         }
 
-        /* --- NOISE  */
-        .noise-overlay {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 9999; /* Fica por cima de TUDO */
-            opacity: 0.05; 
+        /* --- DESKTOP APENAS (CURSOR CUSTOM) --- */
+        @media (hover: hover) and (pointer: fine) {
+            * { cursor: none !important; /* Esconde rato apenas no PC */ }
             
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    
-            animation: noise-shift 0.2s infinite;
+            .cursor-dot, .cursor-outline {
+                display: block; /* Mostra o cursor custom */
+                position: fixed; top: 0; left: 0;
+                transform: translate(-50%, -50%);
+                border-radius: 50%;
+                z-index: 10000; pointer-events: none;
+            }
+            .cursor-dot { width: 8px; height: 8px; background-color: white; }
+            .cursor-outline {
+                width: 40px; height: 40px;
+                border: 1px solid rgba(255, 255, 255, 0.5);
+                transition: background-color 0.2s, transform 0.1s; 
+            }
         }
 
+        /* --- MOBILE / TABLET (CURSOR PADRÃO) --- */
+        @media (hover: none), (pointer: coarse), (max-width: 991px) {
+            * { cursor: auto !important; /* Restaura cursor nativo */ }
+            .cursor-dot, .cursor-outline { display: none !important; /* Esconde custom cursor */ }
+        }
+
+        /* --- NOISE (GRÃO FINO) --- */
+        .noise-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 9999; opacity: 0.05;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            animation: noise-shift 0.2s infinite;
+        }
         @keyframes noise-shift {
             0% { background-position: 0px 0px; }
             10% { background-position: -100px 100px; }
-            20% { background-position: 150px -50px; }
-            30% { background-position: -50px -150px; }
-            40% { background-position: 200px 50px; }
             50% { background-position: -100px 200px; }
-            60% { background-position: 50px -100px; }
-            70% { background-position: 100px 150px; }
-            80% { background-position: -150px -50px; }
-            90% { background-position: 50px 100px; }
             100% { background-position: 0px 0px; }
-        }
-
-        /* --- CUSTOM CURSOR --- */
-        .cursor-dot, .cursor-outline {
-            position: fixed; top: 0; left: 0;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            z-index: 10000; pointer-events: none;
-        }
-        .cursor-dot { width: 8px; height: 8px; background-color: white; }
-        .cursor-outline {
-            width: 40px; height: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            transition: background-color 0.2s, transform 0.1s; 
         }
 
         /* CLASSE DE BLOQUEIO */
@@ -90,8 +84,7 @@
         .preloader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
             background-color: var(--loader-bg);
-            z-index: 9990; 
-            display: flex; justify-content: center; align-items: center;
+            z-index: 9990; display: flex; justify-content: center; align-items: center;
             color: var(--accent-color);
         }
         .loader-content { text-align: center; position: relative; z-index: 2; }
@@ -113,7 +106,7 @@
         .hero-socials a { font-size: 2rem; color: white; margin-right: 20px; transition: 0.3s; }
         .hero-socials a:hover { color: var(--accent-color); }
 
-        /* --- SECÇÕES GERAIS --- */
+        /* --- SECÇÕES --- */
         section { padding: 100px 0; position: relative; z-index: 60; }
         .section-header h2 { font-family: 'Anton', sans-serif; font-size: 3rem; color: var(--dim-text); opacity: 0.2; margin-bottom: 30px; text-transform: uppercase; }
         
@@ -123,8 +116,7 @@
         @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } .grid-4 { grid-template-columns: 1fr; } }
 
         .card {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.05);
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
             padding: 30px; margin-bottom: 20px; border-radius: 8px; transition: transform 0.3s;
             backdrop-filter: blur(5px);
         }
@@ -222,7 +214,7 @@
                     </ul>
                     <ul class="info-list">
                         <li><i class="bi bi-chevron-right"></i> <strong>Degree:</strong> Bachelor's in Computer Engineering</li>
-                        <li><i class="bi bi-chevron-right"></i> <strong>Email:</strong> miguel.f.cabral@hotmail.com</li>
+                        <li><i class="bi bi-chevron-right"></i> <strong>Email:</strong> miguel.cabral.business@outlook.com</li>
                     </ul>
                 </div>
                 <p style="margin-top: 20px;">
@@ -303,7 +295,7 @@
             <div class="icon-box"><i class="ri-movie-line" style="color: #4233ff;"></i><h3>Movies</h3></div>
         </div>
     </section>
-   
+
     <section class="container" id="portfolio">
         <div class="section-header"><h2>PORTFOLIO</h2></div>
         <div style="text-align: center; padding: 50px 0;" class="reveal-content">
@@ -352,7 +344,7 @@
     </section>
 
     <div class="credits">
-        Copyright © Miguel Cabral </a>
+        Copyright © Miguel Cabral</a>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
@@ -363,30 +355,37 @@
         if (history.scrollRestoration) { history.scrollRestoration = 'manual'; }
         window.scrollTo(0, 0);
 
-        const cursorDot = document.querySelector(".cursor-dot");
-        const cursorOutline = document.querySelector(".cursor-outline");
-        let mouseX = 0, mouseY = 0;
+        // --- LÓGICA DO CURSOR ---
+        // Verifica se o dispositivo suporta hover (rato)
+        const isDesktop = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
-        window.addEventListener("mousemove", (e) => {
-            mouseX = e.clientX; mouseY = e.clientY;
-            gsap.to(cursorDot, { x: mouseX, y: mouseY, duration: 0.1 });
-        });
+        if (isDesktop) {
+            const cursorDot = document.querySelector(".cursor-dot");
+            const cursorOutline = document.querySelector(".cursor-outline");
+            let mouseX = 0, mouseY = 0;
 
-        const xTo = gsap.quickTo(cursorOutline, "x", { duration: 0.5, ease: "power3" });
-        const yTo = gsap.quickTo(cursorOutline, "y", { duration: 0.5, ease: "power3" });
-
-        window.addEventListener("mousemove", (e) => { xTo(e.clientX); yTo(e.clientY); });
-
-        const hoverTargets = document.querySelectorAll('a, button, input, textarea, .form-btn, .card');
-        hoverTargets.forEach(target => {
-            target.addEventListener('mouseenter', () => {
-                gsap.to(cursorOutline, { scale: 2.5, backgroundColor: "rgba(255,255,255,0.1)", border: "none", duration: 0.3 });
+            window.addEventListener("mousemove", (e) => {
+                mouseX = e.clientX; mouseY = e.clientY;
+                gsap.to(cursorDot, { x: mouseX, y: mouseY, duration: 0.1 });
             });
-            target.addEventListener('mouseleave', () => {
-                gsap.to(cursorOutline, { scale: 1, backgroundColor: "transparent", border: "1px solid rgba(255, 255, 255, 0.5)", duration: 0.3 });
-            });
-        });
 
+            const xTo = gsap.quickTo(cursorOutline, "x", { duration: 0.5, ease: "power3" });
+            const yTo = gsap.quickTo(cursorOutline, "y", { duration: 0.5, ease: "power3" });
+
+            window.addEventListener("mousemove", (e) => { xTo(e.clientX); yTo(e.clientY); });
+
+            const hoverTargets = document.querySelectorAll('a, button, input, textarea, .form-btn, .card');
+            hoverTargets.forEach(target => {
+                target.addEventListener('mouseenter', () => {
+                    gsap.to(cursorOutline, { scale: 2.5, backgroundColor: "rgba(255,255,255,0.1)", border: "none", duration: 0.3 });
+                });
+                target.addEventListener('mouseleave', () => {
+                    gsap.to(cursorOutline, { scale: 1, backgroundColor: "transparent", border: "1px solid rgba(255, 255, 255, 0.5)", duration: 0.3 });
+                });
+            });
+        }
+
+        // --- LOADING & ANIMATIONS ---
         window.onload = function() {
             if (typeof gsap !== 'undefined') {
                 gsap.registerPlugin(ScrollTrigger);
@@ -441,5 +440,3 @@
     </script>
 </body>
 </html>
-
-
