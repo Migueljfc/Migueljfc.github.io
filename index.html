@@ -1,160 +1,21 @@
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Miguel Cabral | Portfolio</title>
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 
-    <style>
-        /* --- CSS GERAL --- */
-        :root {
-            --bg-color: #050505; 
-            --loader-bg: #111; 
-            --text-color: #f0f0f0;
-            --accent-color: #d8f526; 
-            --dim-text: #888;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        html, body {
-            width: 100%;
-            min-height: 100%;
-            font-family: 'Inter', sans-serif;
-            color: var(--text-color);
-            background-color: #000;
-            background-image: radial-gradient(circle at 50% 50%, #1f1f1f 0%, #000000 100%);
-            background-attachment: fixed;
-            overflow-x: hidden;
-        }
-
-        /* --- DESKTOP APENAS (CURSOR CUSTOM) --- */
-        @media (hover: hover) and (pointer: fine) {
-            * { cursor: none !important; /* Esconde rato apenas no PC */ }
-            
-            .cursor-dot, .cursor-outline {
-                display: block; /* Mostra o cursor custom */
-                position: fixed; top: 0; left: 0;
-                transform: translate(-50%, -50%);
-                border-radius: 50%;
-                z-index: 10000; pointer-events: none;
-            }
-            .cursor-dot { width: 8px; height: 8px; background-color: white; }
-            .cursor-outline {
-                width: 40px; height: 40px;
-                border: 1px solid rgba(255, 255, 255, 0.5);
-                transition: background-color 0.2s, transform 0.1s; 
-            }
-        }
-
-        /* --- MOBILE / TABLET (CURSOR PADRÃO) --- */
-        @media (hover: none), (pointer: coarse), (max-width: 991px) {
-            * { cursor: auto !important; /* Restaura cursor nativo */ }
-            .cursor-dot, .cursor-outline { display: none !important; /* Esconde custom cursor */ }
-        }
-
-        /* --- NOISE (GRÃO FINO) --- */
-        .noise-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: 9999; opacity: 0.05;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-            animation: noise-shift 0.2s infinite;
-        }
-        @keyframes noise-shift {
-            0% { background-position: 0px 0px; }
-            10% { background-position: -100px 100px; }
-            50% { background-position: -100px 200px; }
-            100% { background-position: 0px 0px; }
-        }
-
-        /* CLASSE DE BLOQUEIO */
-        body.locked { overflow: hidden !important; height: 100vh; }
-        
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 60; }
-
-        /* --- PRELOADER --- */
-        .preloader {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-            background-color: var(--loader-bg);
-            z-index: 9990; display: flex; justify-content: center; align-items: center;
-            color: var(--accent-color);
-        }
-        .loader-content { text-align: center; position: relative; z-index: 2; }
-        .loader-logo { font-family: 'Anton', sans-serif; font-size: 4rem; margin-bottom: 20px; opacity: 0; transform: translateY(20px); }
-        .loader-counter { font-family: 'Inter', monospace; font-size: 1.5rem; font-weight: bold; }
-
-        .overlay-curve {
-            position: fixed; bottom: 0; left: 0; width: 100%; height: 100vh;
-            background-color: var(--loader-bg); z-index: 9980;
-            clip-path: ellipse(150% 100% at 50% 100%);
-        }
-
-        /* --- HERO --- */
-        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 60; }
-        .hero-subtitle { color: var(--accent-color); font-size: 1.2rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; margin-bottom: 20px; }
-        .hero-title { font-family: 'Anton', sans-serif; font-size: clamp(60px, 13vw, 200px); line-height: 0.9; text-transform: uppercase; color: white; margin: 0; }
-        .mask-box { overflow: hidden; display: block; }
-        .mask-text { display: block; transform: translateY(110%); }
-        .hero-socials a { font-size: 2rem; color: white; margin-right: 20px; transition: 0.3s; }
-        .hero-socials a:hover { color: var(--accent-color); }
-
-        /* --- SECÇÕES --- */
-        section { padding: 100px 0; position: relative; z-index: 60; }
-        .section-header h2 { font-family: 'Anton', sans-serif; font-size: 3rem; color: var(--dim-text); opacity: 0.2; margin-bottom: 30px; text-transform: uppercase; }
-        
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; }
-        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-        @media (max-width: 992px) { .grid-4 { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } .grid-4 { grid-template-columns: 1fr; } }
-
-        .card {
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
-            padding: 30px; margin-bottom: 20px; border-radius: 8px; transition: transform 0.3s;
-            backdrop-filter: blur(5px);
-        }
-        .card:hover { border-color: var(--accent-color); transform: translateY(-5px); }
-        
-        h3 { color: var(--accent-color); margin-bottom: 15px; font-size: 1.5rem; }
-        h4 { color: white; margin-bottom: 5px; font-weight: bold; }
-        h5 { background: rgba(255,255,255,0.1); display: inline-block; padding: 2px 10px; font-size: 0.8rem; border-radius: 4px; margin-bottom: 10px; }
-        p { line-height: 1.6; color: #ccc; margin-bottom: 15px; }
-        ul { padding-left: 20px; color: #ccc; }
-        li { margin-bottom: 5px; }
-
-        .info-list li { list-style: none; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 5px; }
-        .info-list i { color: var(--accent-color); margin-right: 10px; }
-        .info-list strong { color: white; margin-right: 5px; }
-
-        .skill-bar-container { background: rgba(255,255,255,0.1); height: 6px; width: 100%; margin-bottom: 20px; border-radius: 3px; }
-        .skill-bar { height: 100%; background: var(--accent-color); width: 0%; border-radius: 3px; }
-        .skill-name { display: flex; justify-content: space-between; margin-bottom: 5px; font-weight: bold; }
-
-        .icon-box { text-align: center; padding: 30px 20px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; }
-        .icon-box i { font-size: 32px; margin-bottom: 15px; display: block; }
-        .icon-box h3 { font-size: 1.2rem; color: white; margin: 0; }
-        .icon-box:hover i { transform: scale(1.2); transition: 0.3s; }
-
-        .contact-info i { font-size: 2rem; color: var(--accent-color); margin-bottom: 10px; display: block; }
-        .contact-info { text-align: center; margin-bottom: 30px; }
-        .php-email-form input, .php-email-form textarea {
-            width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-            color: white; padding: 15px; margin-bottom: 15px; border-radius: 5px; font-family: inherit;
-        }
-        .php-email-form input:focus, .php-email-form textarea:focus { outline: none; border-color: var(--accent-color); }
-        .form-btn { background: var(--accent-color); color: black; border: none; padding: 15px 30px; font-weight: bold; text-transform: uppercase; cursor: pointer; width: 100%; }
-        .form-btn:hover { background: white; }
-
-        .credits { text-align: center; padding: 50px; color: #555; font-size: 0.9rem; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 50px; position: relative; z-index: 60; }
-        .credits a { color: #777; text-decoration: none; }
-    </style>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body class="locked">
@@ -170,41 +31,66 @@
             <div class="loader-counter">0%</div>
         </div>
     </div>
-    
+
     <div class="overlay-curve"></div>
+
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="#" class="logo">MC</a>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#resume">Resume</a></li>
+                <li><a href="#portfolio">Portfolio</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
 
     <header class="hero container">
         <div class="mask-box">
             <div class="hero-subtitle mask-text">Computer Engineering Student</div>
         </div>
-        
+
         <h1 class="hero-title">
             <span class="mask-box"><span class="mask-text">MIGUEL</span></span>
             <span class="mask-box"><span class="mask-text" style="color: #444;">CABRAL</span></span>
         </h1>
-        
+
         <div class="mask-box" style="margin-top: 30px;">
-             <div class="hero-socials mask-text">
+            <div class="hero-socials mask-text">
                 <a href="https://www.instagram.com/miguelcabralmwn/" target="_blank"><i class="bi bi-instagram"></i></a>
-                <a href="https://www.linkedin.com/in/miguel-cabral-2254a621b/" target="_blank"><i class="bi bi-linkedin"></i></a>
-                <a href="https://www.facebook.com/miguel.cabral.7777/" target="_blank"><i class="bi bi-facebook"></i></a>
+                <a href="https://www.linkedin.com/in/miguel-cabral-2254a621b/" target="_blank"><i
+                        class="bi bi-linkedin"></i></a>
+                <a href="https://www.facebook.com/miguel.cabral.7777/" target="_blank"><i
+                        class="bi bi-facebook"></i></a>
                 <a href="https://github.com/Migueljfc" target="_blank"><i class="bi bi-github"></i></a>
-             </div>
+            </div>
+        </div>
+
+        <div class="mask-box" style="margin-top: 20px;">
+            <div class="hero-ctas mask-text">
+                <a href="#portfolio" class="cta-btn primary">View Portfolio</a>
+                <a href="#contact" class="cta-btn secondary">Contact Me</a>
+            </div>
         </div>
     </header>
 
     <section id="about" class="container">
-        <div class="section-header"><h2>ABOUT</h2></div>
+        <div class="section-header">
+            <h2>ABOUT</h2>
+        </div>
         <div class="grid-2">
             <div>
-                <img src="assets/img/me.jpg" 
-                     onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&auto=format&fit=crop&q=60'"
-                     style="width: 100%; border-radius: 10px; filter: grayscale(100%);" alt="Miguel Cabral">
+                <img src="assets/img/me.jpg"
+                    onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&auto=format&fit=crop&q=60'"
+                    style="width: 100%; border-radius: 10px; filter: grayscale(100%);" alt="Miguel Cabral">
             </div>
             <div class="reveal-content">
                 <h3>Student</h3>
-                <p class="fst-italic">Interested in learning and innovating. Works well as a team and tries to keep the workspace uncompressed by animating the next one.</p>
-                
+                <p class="fst-italic">Interested in learning and innovating. Works well as a team and tries to keep the
+                    workspace uncompressed by animating the next one.</p>
+
                 <div class="grid-2" style="gap: 20px; margin-top: 20px;">
                     <ul class="info-list">
                         <li><i class="bi bi-chevron-right"></i> <strong>Birthday:</strong> 2 May 2000</li>
@@ -213,45 +99,64 @@
                         <li><i class="bi bi-chevron-right"></i> <strong>Freelance:</strong> Available</li>
                     </ul>
                     <ul class="info-list">
-                        <li><i class="bi bi-chevron-right"></i> <strong>Degree:</strong> Bachelor's in Computer Engineering</li>
-                        <li><i class="bi bi-chevron-right"></i> <strong>Email:</strong> miguel.cabral.business@outlook.com</li>
+                        <li><i class="bi bi-chevron-right"></i> <strong>Degree:</strong> Bachelor's in Computer
+                            Engineering</li>
+                        <li><i class="bi bi-chevron-right"></i> <strong>Email:</strong>
+                            miguel.cabral.business@outlook.com</li>
                     </ul>
                 </div>
                 <p style="margin-top: 20px;">
-                    Federated 6 years in handball and 8 in football, currently playing football. Passionate about technology and sport.
+                    Federated 6 years in handball and 8 in football, currently playing football. Passionate about
+                    technology and sport.
                 </p>
             </div>
         </div>
     </section>
 
-    <section class="container">
-        <div class="section-header"><h2>SKILLS</h2></div>
+    <section id="skills" class="container">
+        <div class="section-header">
+            <h2>SKILLS</h2>
+        </div>
         <div class="grid-2">
             <div class="reveal-content">
                 <div class="skill-name"><span>Java</span><span>90%</span></div>
-                <div class="skill-bar-container"><div class="skill-bar" data-width="90%"></div></div>
+                <div class="skill-bar-container">
+                    <div class="skill-bar" data-width="90%"></div>
+                </div>
 
                 <div class="skill-name"><span>C & C++ & C#</span><span>80%</span></div>
-                <div class="skill-bar-container"><div class="skill-bar" data-width="80%"></div></div>
+                <div class="skill-bar-container">
+                    <div class="skill-bar" data-width="80%"></div>
+                </div>
 
                 <div class="skill-name"><span>MySQL</span><span>70%</span></div>
-                <div class="skill-bar-container"><div class="skill-bar" data-width="70%"></div></div>
+                <div class="skill-bar-container">
+                    <div class="skill-bar" data-width="70%"></div>
+                </div>
             </div>
             <div class="reveal-content">
                 <div class="skill-name"><span>Python</span><span>90%</span></div>
-                <div class="skill-bar-container"><div class="skill-bar" data-width="90%"></div></div>
+                <div class="skill-bar-container">
+                    <div class="skill-bar" data-width="90%"></div>
+                </div>
 
                 <div class="skill-name"><span>HTML & CSS & JS</span><span>80%</span></div>
-                <div class="skill-bar-container"><div class="skill-bar" data-width="80%"></div></div>
+                <div class="skill-bar-container">
+                    <div class="skill-bar" data-width="80%"></div>
+                </div>
 
                 <div class="skill-name"><span>Docker</span><span>70%</span></div>
-                <div class="skill-bar-container"><div class="skill-bar" data-width="70%"></div></div>
+                <div class="skill-bar-container">
+                    <div class="skill-bar" data-width="70%"></div>
+                </div>
             </div>
         </div>
     </section>
 
-    <section class="container">
-        <div class="section-header"><h2>RESUME</h2></div>
+    <section id="resume" class="container">
+        <div class="section-header">
+            <h2>RESUME</h2>
+        </div>
         <div class="grid-2">
             <div class="reveal-content">
                 <h3>Education</h3>
@@ -282,31 +187,54 @@
         </div>
     </section>
 
-    <section class="container">
-        <div class="section-header"><h2>INTERESTS</h2></div>
+    <section id="interests" class="container">
+        <div class="section-header">
+            <h2>INTERESTS</h2>
+        </div>
         <div class="grid-4 reveal-content">
-            <div class="icon-box"><i class="ri-basketball-line" style="color: #ffbb2c;"></i><h3>Handball</h3></div>
-            <div class="icon-box"><i class="ri-football-line" style="color: #5578ff;"></i><h3>Football</h3></div>
-            <div class="icon-box"><i class="ri-bike-line" style="color: #e80368;"></i><h3>Cycling</h3></div>
-            <div class="icon-box"><i class="ri-gamepad-line" style="color: #e361ff;"></i><h3>Games</h3></div>
-            <div class="icon-box"><i class="ri-e-bike-line" style="color: #47aeff;"></i><h3>Motorcycles</h3></div>
-            <div class="icon-box"><i class="ri-road-map-line" style="color: #ffa76e;"></i><h3>Travel</h3></div>
-            <div class="icon-box"><i class="ri-image-2-line" style="color: #11dbcf;"></i><h3>Photo</h3></div>
-            <div class="icon-box"><i class="ri-movie-line" style="color: #4233ff;"></i><h3>Movies</h3></div>
+            <div class="icon-box"><i class="ri-basketball-line" style="color: #ffbb2c;"></i>
+                <h3>Handball</h3>
+            </div>
+            <div class="icon-box"><i class="ri-football-line" style="color: #5578ff;"></i>
+                <h3>Football</h3>
+            </div>
+            <div class="icon-box"><i class="ri-bike-line" style="color: #e80368;"></i>
+                <h3>Cycling</h3>
+            </div>
+            <div class="icon-box"><i class="ri-gamepad-line" style="color: #e361ff;"></i>
+                <h3>Games</h3>
+            </div>
+            <div class="icon-box"><i class="ri-e-bike-line" style="color: #47aeff;"></i>
+                <h3>Motorcycles</h3>
+            </div>
+            <div class="icon-box"><i class="ri-road-map-line" style="color: #ffa76e;"></i>
+                <h3>Travel</h3>
+            </div>
+            <div class="icon-box"><i class="ri-image-2-line" style="color: #11dbcf;"></i>
+                <h3>Photo</h3>
+            </div>
+            <div class="icon-box"><i class="ri-movie-line" style="color: #4233ff;"></i>
+                <h3>Movies</h3>
+            </div>
         </div>
     </section>
 
     <section class="container" id="portfolio">
-        <div class="section-header"><h2>PORTFOLIO</h2></div>
+        <div class="section-header">
+            <h2>PORTFOLIO</h2>
+        </div>
         <div style="text-align: center; padding: 50px 0;" class="reveal-content">
-            <h1 style="color: #333; font-family: 'Anton'; font-size: 5vw; text-transform: uppercase;">Available Soon</h1>
+            <h1 style="color: #333; font-family: 'Anton'; font-size: 5vw; text-transform: uppercase;">Available Soon
+            </h1>
             <p>My Works</p>
         </div>
     </section>
 
     <section class="container" id="contact">
-        <div class="section-header"><h2>CONTACT</h2></div>
-        
+        <div class="section-header">
+            <h2>CONTACT</h2>
+        </div>
+
         <div class="grid-4 reveal-content" style="margin-bottom: 50px;">
             <div class="contact-info">
                 <i class="bx bx-map"></i>
@@ -351,92 +279,7 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 
-    <script>
-        if (history.scrollRestoration) { history.scrollRestoration = 'manual'; }
-        window.scrollTo(0, 0);
-
-        // --- LÓGICA DO CURSOR ---
-        // Verifica se o dispositivo suporta hover (rato)
-        const isDesktop = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-
-        if (isDesktop) {
-            const cursorDot = document.querySelector(".cursor-dot");
-            const cursorOutline = document.querySelector(".cursor-outline");
-            let mouseX = 0, mouseY = 0;
-
-            window.addEventListener("mousemove", (e) => {
-                mouseX = e.clientX; mouseY = e.clientY;
-                gsap.to(cursorDot, { x: mouseX, y: mouseY, duration: 0.1 });
-            });
-
-            const xTo = gsap.quickTo(cursorOutline, "x", { duration: 0.5, ease: "power3" });
-            const yTo = gsap.quickTo(cursorOutline, "y", { duration: 0.5, ease: "power3" });
-
-            window.addEventListener("mousemove", (e) => { xTo(e.clientX); yTo(e.clientY); });
-
-            const hoverTargets = document.querySelectorAll('a, button, input, textarea, .form-btn, .card');
-            hoverTargets.forEach(target => {
-                target.addEventListener('mouseenter', () => {
-                    gsap.to(cursorOutline, { scale: 2.5, backgroundColor: "rgba(255,255,255,0.1)", border: "none", duration: 0.3 });
-                });
-                target.addEventListener('mouseleave', () => {
-                    gsap.to(cursorOutline, { scale: 1, backgroundColor: "transparent", border: "1px solid rgba(255, 255, 255, 0.5)", duration: 0.3 });
-                });
-            });
-        }
-
-        // --- LOADING & ANIMATIONS ---
-        window.onload = function() {
-            if (typeof gsap !== 'undefined') {
-                gsap.registerPlugin(ScrollTrigger);
-                
-                const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
-                lenis.stop();
-                function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-                requestAnimationFrame(raf);
-
-                const counterElement = document.querySelector(".loader-counter");
-                let count = { value: 0 }; 
-                const tl = gsap.timeline();
-
-                tl.to(".loader-logo", { y: 0, opacity: 1, duration: 0.8, ease: "power2.out" })
-                .to(count, {
-                    value: 100, duration: 2, ease: "power2.inOut",
-                    onUpdate: function() { counterElement.textContent = Math.round(count.value) + "%"; }
-                })
-                .to(".loader-content", { y: -50, opacity: 0, duration: 0.5 })
-                .to(".preloader", { height: 0, duration: 1.2, ease: "power4.inOut" })
-                .to(".overlay-curve", { height: 0, duration: 1.2, ease: "power4.inOut", delay: -1.0 })
-                .to(".mask-text", {
-                    y: "0%", duration: 1.2, stagger: 0.1, ease: "power4.out",
-                    onStart: () => {
-                        document.body.classList.remove("locked");
-                        lenis.start();
-                    }
-                }, "-=0.5");
-
-                setupScrollAnimations();
-            } else {
-                document.body.classList.remove("locked");
-                document.querySelector('.preloader').style.display = 'none';
-            }
-        };
-
-        function setupScrollAnimations() {
-            gsap.utils.toArray('.skill-bar').forEach(bar => {
-                gsap.to(bar, {
-                    width: bar.getAttribute('data-width'), duration: 1.5, ease: "power2.out",
-                    scrollTrigger: { trigger: bar, start: "top 85%" }
-                });
-            });
-
-            gsap.utils.toArray('.reveal-content').forEach(el => {
-                gsap.from(el, {
-                    y: 50, opacity: 0, duration: 1,
-                    scrollTrigger: { trigger: el, start: "top 85%" }
-                });
-            });
-        }
-    </script>
+    <script src="assets/js/main.js"></script>
 </body>
+
 </html>
