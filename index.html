@@ -4,15 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Miguel Cabral | Software Developer</title>
+    <title>Miguel Cabral Portfolio</title>
     <link href="./assets/img/favicon.png" rel="icon">
     <link href="./assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
     <!-- Meta tags for SEO & Link Sharing -->
-    <meta name="description"
-        content="Portfolio de Miguel Cabral - Estudante de Engenharia Informática e Desenvolvedor de Software.">
+    <meta name="description" content="Portfolio de Miguel Cabral - Desenvolvedor de Software, Devops.">
     <meta name="keywords"
-        content="Miguel Cabral, Portfolio, Engenharia Informática, Java, Python, C++, Docker, Web Developer">
+        content="Miguel Cabral, Portfolio, Engenharia Informática, Java, Python, C++, Docker, Web Developer, Devops, Cloud">
     <meta name="author" content="Miguel Cabral">
     <meta name="theme-color" content="#111827">
 
@@ -35,10 +34,12 @@
     <div class="cursor-outline"></div>
 
     <!-- Preloader -->
-    <div class="preloader">
-        <div class="loader-content">
-            <div class="loader-logo">MC</div>
-            <div class="loader-counter">0%</div>
+    <div class="preloader" id="three-preloader">
+        <div id="three-canvas-container"
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;"></div>
+        <div class="loader-content flex flex-col items-center justify-center z-10 relative h-full w-full">
+            <div class="loader-counter font-mono font-bold text-4xl text-white">0%</div>
+            <div class="text-blue-400 font-mono text-sm mt-2 tracking-widest uppercase">Initializing</div>
         </div>
     </div>
     <div class="overlay-curve"></div>
@@ -54,18 +55,23 @@
             </a>
 
             <ul class="nav-links" id="navLinks">
-                <li><a href="#home" class="nav-link font-mono"><span class="tag">&lt;</span>Início<span
-                            class="tag">/&gt;</span></a></li>
-                <li><a href="#about" class="nav-link font-mono"><span class="tag">&lt;</span>Sobre<span
-                            class="tag">/&gt;</span></a></li>
-                <li><a href="#skills" class="nav-link font-mono"><span class="tag">&lt;</span>Skills<span
-                            class="tag">/&gt;</span></a></li>
-                <li><a href="#resume" class="nav-link font-mono"><span class="tag">&lt;</span>Currículo<span
-                            class="tag">/&gt;</span></a></li>
-                <li><a href="#portfolio" class="nav-link font-mono"><span class="tag">&lt;</span>Projetos<span
-                            class="tag">/&gt;</span></a></li>
-                <li><a href="#contact" class="nav-link font-mono"><span class="tag">&lt;</span>Contacto<span
-                            class="tag">/&gt;</span></a></li>
+                <li><a href="#home" class="nav-link font-mono"><span class="tag">&lt;</span><span
+                            data-i18n="nav_home">Início</span><span class="tag">/&gt;</span></a></li>
+                <li><a href="#about" class="nav-link font-mono"><span class="tag">&lt;</span><span
+                            data-i18n="nav_about">Sobre</span><span class="tag">/&gt;</span></a></li>
+                <li><a href="#skills" class="nav-link font-mono"><span class="tag">&lt;</span><span
+                            data-i18n="nav_skills">Skills</span><span class="tag">/&gt;</span></a></li>
+                <li><a href="#resume" class="nav-link font-mono"><span class="tag">&lt;</span><span
+                            data-i18n="nav_resume">Currículo</span><span class="tag">/&gt;</span></a></li>
+                <li><a href="#portfolio" class="nav-link font-mono"><span class="tag">&lt;</span><span
+                            data-i18n="nav_portfolio">Projetos</span><span class="tag">/&gt;</span></a></li>
+                <li><a href="#contact" class="nav-link font-mono"><span class="tag">&lt;</span><span
+                            data-i18n="nav_contact">Contacto</span><span class="tag">/&gt;</span></a></li>
+                <li class="flex items-center ml-2 border-l border-gray-700 pl-4">
+                    <button id="langToggle" class="font-mono cursor-pointer transition-colors"
+                        style="background: transparent; border: none; outline: none; color: #9ca3af; font-size: 0.85rem;"
+                        onmouseover="this.style.color='#3b82f6'" onmouseout="this.style.color='#9ca3af'">EN</button>
+                </li>
             </ul>
 
             <button class="mobile-toggle" id="mobileToggle">
@@ -84,24 +90,36 @@
 
 
             <!-- Terminal Decor Left -->
-            <div class="absolute top-24 left-10 terminal-decor-area z-10">
-                <div class="terminal-window w-80">
+            <div class="absolute top-24 left-10 terminal-decor-area z-10" id="interactive-terminal"
+                style="pointer-events: auto;">
+                <div class="terminal-window w-80" style="cursor: text;"
+                    onclick="document.getElementById('terminal-input').focus()">
                     <div class="terminal-header">
                         <div class="terminal-dots">
                             <div class="terminal-dot dot-red"></div>
                             <div class="terminal-dot dot-yellow"></div>
                             <div class="terminal-dot dot-green"></div>
                         </div>
-                        <span class="text-xs text-gray-400 ml-4 font-mono">bash</span>
+                        <span class="text-xs text-gray-400 ml-4 font-mono">bash - miguel@zorin</span>
                     </div>
-                    <div class="terminal-body font-mono">
-                        <div class="text-green-400">$ whoami</div>
-                        <div class="text-gray-300 mt-2">Miguel Cabral</div>
-                        <div class="text-green-400 mt-3">$ neofetch</div>
-                        <div class="text-blue-400 mt-1">OS: Zorin OS 18</div>
-                        <div class="text-blue-400">Host: University of Aveiro</div>
-                        <div class="text-blue-400">Major: Computer Engineering</div>
-                        <div class="text-gray-400 mt-2">_</div>
+                    <div class="terminal-body font-mono flex flex-col" style="height: 220px; overflow-y: auto;"
+                        id="terminal-body">
+                        <div id="terminal-history">
+                            <div class="text-green-400 flex"><span class="mr-2">$</span>whoami</div>
+                            <div class="text-gray-300">Miguel Cabral</div>
+                            <div class="text-green-400 flex mt-2"><span class="mr-2">$</span>neofetch</div>
+                            <div class="text-blue-400">OS: Zorin OS 18</div>
+                            <div class="text-blue-400">Host: University of Aveiro</div>
+                            <div class="text-blue-400">Major: Computer Engineering</div>
+                        </div>
+                        <div class="terminal-input-line flex mt-2 relative items-center">
+                            <span class="text-green-400 mr-2">$</span>
+                            <span id="terminal-display" class="text-gray-300"></span>
+                            <span class="ml-1"
+                                style="background-color: #d1d5db; animation: blink 1s infinite; display: inline-block; width: 8px; height: 16px; flex-shrink: 0; vertical-align: middle;"></span>
+                            <input type="text" id="terminal-input" autocomplete="off" spellcheck="false"
+                                style="opacity: 0; position: absolute; z-index: -10; width: 0; height: 0; border: none; outline: none; color: transparent; background: transparent;">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -156,13 +174,13 @@
                     </span>
                 </div>
 
-                <p class="text-lg md:text-xl text-gray-400 font-mono mb-12">
-                    <span class="text-purple-400">//</span> Apaixonado por tecnologia e soluções em código.
+                <p class="text-lg md:text-xl text-gray-400 font-mono mb-12" data-i18n="hero_subtitle">
+                    // Apaixonado por tecnologia e soluções em código.
                 </p>
 
                 <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-                    <a href="#portfolio" class="btn btn-primary">&gt; Ver Projetos</a>
-                    <a href="#contact" class="btn btn-secondary">&gt; Contactar</a>
+                    <a href="#portfolio" class="btn btn-primary" data-i18n="btn_projects">&gt; Ver Projetos</a>
+                    <a href="#contact" class="btn btn-secondary" data-i18n="btn_contact">&gt; Contactar</a>
                 </div>
 
                 <div class="flex gap-6 justify-center">
@@ -191,45 +209,42 @@
                     <div class="section-tag font-mono">&lt;section id="about"&gt;</div>
                     <h2 class="section-title">
                         <span class="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent"
-                            style="-webkit-background-clip: text;">Sobre Mim</span>
+                            style="-webkit-background-clip: text;" data-i18n="about_sec_title">Sobre Mim</span>
                     </h2>
-                    <p class="text-xl text-gray-400 font-mono">
-                        <span class="text-purple-400">/*</span> Interessado em aprender e inovar. Trabalho bem em
-                        equipa. <span class="text-purple-400">*/</span>
-                    </p>
+                    <!-- <p class="text-xl text-gray-400 font-mono" data-i18n="about_sec_desc">
+                        /* Apaixonado por criar soluções digitais com código limpo e tecnologias modernas. */
+                    </p> -->
                 </div>
 
                 <div class="grid-cols-2 lg:grid-cols-4 gap-6 reveal-content">
                     <!-- Bio Glass Card -->
                     <div class="glass-card about-bio-card">
-                        <h3 class="text-xl font-bold mb-4 font-mono text-white">Student</h3>
-                        <p class="mb-4">Desenvolvedor e estudante de Engenharia Informática na Universidade de Aveiro.
-                            Federado 6 anos em andebol e 8 em futebol. Concilio o pensamento analítico da computação com
-                            o espírito de equipa do desporto.</p>
-
+                        <h3 class="text-xl font-bold mb-4 font-mono text-white" data-i18n="about_student">Fullstack Developer</h3>
+                        <p class="mb-4" data-i18n="about_bio">Finalista do Mestrado em Engenharia de Computadores e Telemática na Universidade de Aveiro. O meu perfil é sustentado por uma base forte em engenharia de software e arquiteturas de sistemas.</p>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
                             <ul class="text-sm space-y-2">
-                                <li><strong class="text-white">Idade:</strong> 25</li>
-                                <li><strong class="text-white">Cidade:</strong> Aveiro, PT</li>
+                                <li><strong class="text-white" data-i18n="about_age">Idade:</strong> 25</li>
+                                <li><strong class="text-white" data-i18n="about_city">Cidade:</strong> Aveiro, PT</li>
                             </ul>
                             <ul class="text-sm space-y-2">
-                                <li><strong class="text-white">Email:</strong> miguel.cabral.business@outlook.com</li>
-                                <li><strong class="text-white">Freelance:</strong> Disponível</li>
+                                <li><strong class="text-white">Email:</strong> miguel.f.cabral@hotmail.com</li>
+                                <li><strong class="text-white" data-i18n="about_freelance">Freelance:</strong> <span
+                                        data-i18n="about_available">Disponível</span></li>
                             </ul>
                         </div>
                     </div>
 
                     <!-- Interest Cards -->
                     <div class="glass-card text-center flex flex-col justify-center items-center">
-                        <div class="card-icon"><i class="ri-code-box-line text-2xl text-white"></i></div>
-                        <h4 class="font-bold text-white font-mono">Dev</h4>
-                        <p class="text-xs text-gray-400 mt-2">Focado em arquitetura limpa e resolução de problemas.</p>
+                        <div class="card-icon"><i class="ri-code-s-slash-line text-2xl text-white"></i></div>
+                        <h4 class="font-bold text-white font-mono" data-i18n="about_fullstack_title">Clean Code</h4>
+                        <p class="text-xs text-gray-400 mt-2" data-i18n="about_dev_focus">Código limpo, estruturado e sustentável, aplicando princípios SOLID e design patterns.</p>
                     </div>
 
                     <div class="glass-card text-center flex flex-col justify-center items-center">
-                        <div class="card-icon"><i class="ri-football-line text-2xl text-white"></i></div>
-                        <h4 class="font-bold text-white font-mono">Desporto</h4>
-                        <p class="text-xs text-gray-400 mt-2">Espírito desportivo e foco nos resultados de equipa.</p>
+                        <div class="card-icon"><i class="ri-speed-line text-2xl text-white"></i></div>
+                        <h4 class="font-bold text-white font-mono" data-i18n="about_solve_title">Performance</h4>
+                        <p class="text-xs text-gray-400 mt-2" data-i18n="about_solve_desc">Aplicações otimizadas para máxima eficiência, escalabilidade e experiência do utilizador.</p>
                     </div>
                 </div>
             </div>
@@ -242,58 +257,74 @@
                     <div class="section-tag font-mono">&lt;section id="skills"&gt;</div>
                     <h2 class="section-title">
                         <span class="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent"
-                            style="-webkit-background-clip: text;">Tecnologias</span>
+                            style="-webkit-background-clip: text;" data-i18n="skills_sec_title">Tecnologias</span>
                     </h2>
                 </div>
 
-                <div class="grid-cols-1 md:grid-cols-2 gap-12 reveal-content">
-                    <div class="glass-card">
-                        <h3 class="text-xl font-bold font-mono text-white mb-6">Backend & Core</h3>
+                <!-- Code-syntax skill cards -->
+                <div class="reveal-content" style="display:grid; grid-template-columns: repeat(3, 1fr); gap:1.5rem;">
 
-                        <div class="skill-item">
-                            <div class="skill-info"><span>Java</span><span>90%</span></div>
-                            <div class="progress-bg">
-                                <div class="progress-bar" style="width: 90%;"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info"><span>Python</span><span>90%</span></div>
-                            <div class="progress-bg">
-                                <div class="progress-bar" style="width: 90%;"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info"><span>C / C++ / C#</span><span>80%</span></div>
-                            <div class="progress-bg">
-                                <div class="progress-bar" style="width: 80%;"></div>
-                            </div>
-                        </div>
+                    <!-- Frontend -->
+                    <div class="glass-card" style="padding:2rem;">
+                        <p class="font-mono" style="margin-bottom:1.5rem;">
+                            <span style="color:#c084fc;">const</span> <span style="font-size:1.25rem; font-weight:700; color:#fff;">Frontend</span> <span style="color:#9ca3af;">=</span> <span style="color:#9ca3af;">{</span>
+                        </p>
+                        <ul class="font-mono" style="list-style:none; padding-left:1rem; display:flex; flex-direction:column; gap:0.75rem; color:#d1d5db; font-size:0.9rem;">
+                            <li>React / Next.js</li>
+                            <li>TypeScript</li>
+                            <li>Tailwind CSS</li>
+                            <li>HTML / CSS</li>
+                        </ul>
+                        <p class="font-mono" style="color:#9ca3af; margin-top:1.5rem;">}</p>
                     </div>
 
-                    <div class="glass-card">
-                        <h3 class="text-xl font-bold font-mono text-white mb-6">Web & Info</h3>
+                    <!-- Backend -->
+                    <div class="glass-card" style="padding:2rem;">
+                        <p class="font-mono" style="margin-bottom:1.5rem;">
+                            <span style="color:#c084fc;">const</span> <span style="font-size:1.25rem; font-weight:700; color:#fff;">Backend</span> <span style="color:#9ca3af;">=</span> <span style="color:#9ca3af;">{</span>
+                        </p>
+                        <ul class="font-mono" style="list-style:none; padding-left:1rem; display:flex; flex-direction:column; gap:0.75rem; color:#d1d5db; font-size:0.9rem;">
+                            <li>Java </li>
+                            <li>C / C++</li>
+                            <li>Kotlin</li>
+                            <li>Python / FastAPI</li>
+                            <li>JavaScript / Node.js</li>
+                            <li>PostgreSQL / MySQL</li>
+                            <li>REST / WebServices</li>
+                        </ul>
+                        <p class="font-mono" style="color:#9ca3af; margin-top:1.5rem;">}</p>
+                    </div>
 
-                        <div class="skill-item">
-                            <div class="skill-info"><span>HTML / CSS / JS</span><span>80%</span></div>
-                            <div class="progress-bg">
-                                <div class="progress-bar" style="width: 80%;"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info"><span>MySQL</span><span>70%</span></div>
-                            <div class="progress-bg">
-                                <div class="progress-bar" style="width: 70%;"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info"><span>Docker</span><span>70%</span></div>
-                            <div class="progress-bg">
-                                <div class="progress-bar" style="width: 70%;"></div>
-                            </div>
-                        </div>
+                    <!-- DevOps & Tools -->
+                    <div class="glass-card" style="padding:2rem;">
+                        <p class="font-mono" style="margin-bottom:1.5rem;">
+                            <span style="color:#c084fc;">const</span> <span style="font-size:1.25rem; font-weight:700; color:#fff;">DevOps & Tools</span> <span style="color:#9ca3af;">=</span> <span style="color:#9ca3af;">{</span>
+                        </p>
+                        <ul class="font-mono" style="list-style:none; padding-left:1rem; display:flex; flex-direction:column; gap:0.75rem; color:#d1d5db; font-size:0.9rem;">
+                            <li>Git / GitHub</li>
+                            <li>Docker / Kubernetes</li>
+                            <li>CI/CD</li>
+                            <li>AWS</li>
+                        </ul>
+                        <p class="font-mono" style="color:#9ca3af; margin-top:1.5rem;">}</p>
                     </div>
                 </div>
-            </div>
+
+                <!-- Other Technologies -->
+                <!-- <div class="reveal-content" style="margin-top:3rem; text-align:center;">
+                    <p class="font-mono" style="color:#60a5fa; font-size:0.9rem; margin-bottom:1.25rem;" data-i18n="skills_other">// Outras Tecnologias</p>
+                    <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:0.6rem;">
+                        <span class="font-mono" style="background:rgba(31,41,55,0.8); border:1px solid #374151; color:#d1d5db; padding:0.4rem 1rem; border-radius:6px; font-size:0.8rem;">Angular</span>
+                        <span class="font-mono" style="background:rgba(31,41,55,0.8); border:1px solid #374151; color:#d1d5db; padding:0.4rem 1rem; border-radius:6px; font-size:0.8rem;">Vue.js</span>
+                        <span class="font-mono" style="background:rgba(31,41,55,0.8); border:1px solid #374151; color:#d1d5db; padding:0.4rem 1rem; border-radius:6px; font-size:0.8rem;">GraphQL</span>
+                        <span class="font-mono" style="background:rgba(31,41,55,0.8); border:1px solid #374151; color:#d1d5db; padding:0.4rem 1rem; border-radius:6px; font-size:0.8rem;">WebSocket</span>
+                        <span class="font-mono" style="background:rgba(55,65,81,0.9); border:1px solid #4b5563; color:#d1d5db; padding:0.4rem 1rem; border-radius:6px; font-size:0.8rem;">Redis</span>
+                        <span class="font-mono" style="background:rgba(55,65,81,0.9); border:1px solid #4b5563; color:#d1d5db; padding:0.4rem 1rem; border-radius:6px; font-size:0.8rem;">Nginx</span>
+                        <span class="font-mono" style="background:rgba(55,65,81,0.9); border:1px solid #4b5563; color:#d1d5db; padding:0.4rem 1rem; border-radius:6px; font-size:0.8rem;">Apache2</span>
+                        <span class="font-mono" style="background:rgba(55,65,81,0.9); border:1px solid #4b5563; color:#d1d5db; padding:0.4rem 1rem; border-radius:6px; font-size:0.8rem;">Linux</span>
+                    </div>
+                </div>
+            </div> -->
         </section>
 
         <!-- Resume Section -->
@@ -303,38 +334,71 @@
                     <div class="section-tag font-mono">&lt;section id="resume"&gt;</div>
                     <h2 class="section-title">
                         <span class="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent"
-                            style="-webkit-background-clip: text;">Currículo</span>
+                            style="-webkit-background-clip: text;" data-i18n="resume_sec_title">Currículo</span>
                     </h2>
                 </div>
 
                 <div class="grid-cols-1 md:grid-cols-2 gap-8 reveal-content">
                     <div class="glass-card relative">
-                        <h3 class="text-xl font-bold font-mono text-white mb-6">Educação</h3>
+                        <h3 class="text-xl font-bold font-mono text-white mb-6" data-i18n="resume_edu_title">Educação
+                        </h3>
                         <div class="mb-8 border-l border-gray-700 pl-6 relative">
                             <div class="absolute w-3 h-3 bg-blue-500 rounded-full -left-[6.5px] top-1"></div>
-                            <h4 class="text-lg font-bold text-white">Engenharia Informática (Mestrado)</h4>
-                            <div class="text-blue-400 font-mono text-sm mb-2">2018 - Presente</div>
+                            <h4 class="text-lg font-bold text-white" data-i18n="resume_master">Mestrado em Engenharia de
+                                Computadores e Telemática</h4>
+                            <div class="text-blue-400 font-mono text-sm mb-2" data-i18n="resume_master_date">2023 - Presente
+                            </div>
+                            <p><em>Universidade de Aveiro, Aveiro, PT</em></p>
+                        </div>
+                        <div class="mb-8 border-l border-gray-700 pl-6 relative">
+                            <div class="absolute w-3 h-3 bg-blue-500 rounded-full -left-[6.5px] top-1"></div>
+                            <h4 class="text-lg font-bold text-white" data-i18n="resume_bachelor">Licenciatura em
+                                Ciências da Engenharia de Computadores e Telemática</h4>
+                            <div class="text-blue-400 font-mono text-sm mb-2">2018 - 2023</div>
                             <p><em>Universidade de Aveiro, Aveiro, PT</em></p>
                         </div>
                         <div class="border-l border-gray-700 pl-6 relative">
                             <div class="absolute w-3 h-3 bg-blue-500 rounded-full -left-[6.5px] top-1"></div>
-                            <h4 class="text-lg font-bold text-white">Ciências e Tecnologias</h4>
+                            <h4 class="text-lg font-bold text-white" data-i18n="resume_highschool">Ciências e
+                                Tecnologias</h4>
                             <div class="text-blue-400 font-mono text-sm mb-2">2015 - 2018</div>
                             <p><em>Escola Secundária de Gouveia, Gouveia, PT</em></p>
                         </div>
                     </div>
 
                     <div class="glass-card relative">
-                        <h3 class="text-xl font-bold font-mono text-white mb-6">Experiência</h3>
+                        <h3 class="text-xl font-bold font-mono text-white mb-6" data-i18n="resume_exp_title">Experiência
+                        </h3>
                         <div class="border-l border-gray-700 pl-6 relative">
                             <div class="absolute w-3 h-3 bg-purple-500 rounded-full -left-[6.5px] top-1"></div>
-                            <h4 class="text-lg font-bold text-white">Suporte & Infraestrutura VideoWall</h4>
-                            <div class="text-blue-400 font-mono text-sm mb-2">2021 - 2022</div>
-                            <p><em>Universidade de Aveiro, Aveiro, PT</em></p>
+                            <h4 class="text-lg font-bold text-white" data-i18n="resume_job1_role">Assistente de Vendas e
+                                Apoio Técnico</h4>
+                            <div class="text-blue-400 font-mono text-sm mb-2" data-i18n="resume_job1_date">2025 - 2026</div>
+                            <p><em data-i18n="resume_job1_loc">Worten – Equipamentos para o Lar, S.A. , Figueira da Foz,
+                                    PT</em></p>
                             <ul class="list-disc pl-4 mt-2 text-gray-400 text-sm">
-                                <li class="mb-2">Desenvolvimento de infraestrutura de marcação de espaços.</li>
-                                <li class="mb-2">Criação de portal web e documentação.</li>
-                                <li>Coordenação de planos de treino.</li>
+                                <li class="mb-2" data-i18n="resume_job1_desc1">Diagnóstico técnico: Realizei a resolução
+                                    inicial de problemas e diagnósticos em dispositivos móveis e eletrónica de consumo,
+                                    identificando falhas de hardware e de software.</li>
+                                <li class="mb-2" data-i18n="resume_job1_desc2">Função de consultoria: Prestei
+                                    aconselhamento técnico aos clientes sobre especificações de produtos,
+                                    compatibilidade e as melhores soluções para as suas necessidades específicas.</li>
+                            </ul>
+                        </div>
+                        <div class="border-l border-gray-700 pl-6 relative mt-8">
+                            <div class="absolute w-3 h-3 bg-purple-500 rounded-full -left-[6.5px] top-1"></div>
+                            <h4 class="text-lg font-bold text-white" data-i18n="resume_job2_role">Técnico de
+                                Investigação (Projeto RNCA)</h4>
+                            <div class="text-blue-400 font-mono text-sm mb-2">2021 - 2022</div>
+                            <p><em data-i18n="resume_job2_loc">Centro de Visualização Avançada da Universidade de
+                                    Aveiro, Aveiro, PT</em></p>
+                            <ul class="list-disc pl-4 mt-2 text-gray-400 text-sm">
+                                <li class="mb-2" data-i18n="resume_job2_desc1">Implementação do servidor SAGE2 num
+                                    cluster de alto desempenho, garantindo uma sincronização perfeita entre vários nós.
+                                </li>
+                                <li class="mb-2" data-i18n="resume_job2_desc2">Criação de portal web e documentação.
+                                </li>
+                                <li class="mb-2" data-i18n="resume_job2_desc3">Coordenação de ações de formação.</li>
                             </ul>
                         </div>
                     </div>
@@ -349,10 +413,11 @@
                     <div class="section-tag font-mono">&lt;section id="projects"&gt;</div>
                     <h2 class="section-title mb-2">
                         <span class="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent"
-                            style="-webkit-background-clip: text;">Projetos</span>
+                            style="-webkit-background-clip: text;" data-i18n="portfolio_sec_title">Projetos</span>
                     </h2>
                     <p class="text-sm text-gray-500 font-mono mt-4 flex justify-center items-center gap-2">
-                        <i data-lucide="move-horizontal"></i> Desliza ou usa as setas para navegar
+                        <i data-lucide="move-horizontal"></i> <span data-i18n="portfolio_swipe_hint">Desliza ou usa as
+                            setas para navegar</span>
                     </p>
                 </div>
 
@@ -360,45 +425,41 @@
                 <div class="swiper portfolio-swiper reveal-content">
                     <div class="swiper-wrapper">
 
-                        <!-- Project 1 Dummy -->
-                        <div class="swiper-slide glass-card portfolio-card">
+                        <div class="swiper-slide glass-card portfolio-card" data-repo="https://github.com/Migueljfc/AppJobStackPT" data-live="https://app-job-stack-pt.vercel.app/">
                             <div class="portfolio-img-stub">
-                                <i data-lucide="image" class="text-gray-500" style="width: 48px; height: 48px;"></i>
+                                <img src="assets/img/portfolio/project1.png" alt="JobStackPT" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
                             </div>
-                            <h3 class="text-xl font-bold text-white font-mono mt-4">Sistema Multiagente</h3>
-                            <p class="text-xs text-blue-400 mt-1">Java • JADE</p>
-                            <p class="mt-4 text-sm text-gray-300">Simulação de uma rede de veículos autónomos de
-                                emergência coordenados num sistema inteligente usando a framework JADE.</p>
-                            <a href="#" class="btn btn-secondary mt-6 w-full justify-center">Ver GitHub</a>
+                            <h3 class="text-xl font-bold text-white font-mono mt-4">WEB APP - JobStackPT</h3>
+                            <p class="text-xs text-blue-400 mt-1">NEXT.JS • PostgreSQL</p>
+                            <p class="mt-4 text-sm text-gray-300" data-i18n="p1_desc">WebApp que funciona como um agregador de vagas, 
+                                oportunidades e empregos na área das Tecnologias de Informação em Portugal.</p>
+                            <button class="btn btn-secondary mt-6 w-full justify-center project-preview-btn" data-i18n="btn_details">Ver Detalhes</button>
                         </div>
 
-                        <!-- Project 2 Dummy -->
-                        <div class="swiper-slide glass-card portfolio-card">
+                        <div class="swiper-slide glass-card portfolio-card" data-repo="https://github.com/Migueljfc/JobStackPT">
                             <div class="portfolio-img-stub">
-                                <i data-lucide="server" class="text-gray-500" style="width: 48px; height: 48px;"></i>
+                                <img src="assets/img/portfolio/project2.png" alt="JobStackPT" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
                             </div>
-                            <h3 class="text-xl font-bold text-white font-mono mt-4">API de Gestão RestFull</h3>
-                            <p class="text-xs text-blue-400 mt-1">Spring Boot • Docker</p>
-                            <p class="mt-4 text-sm text-gray-300">Containerização e deploy de uma API robusta e
-                                escalável, pensada para integração contínua e tolerância a falhas pesadas.</p>
-                            <a href="#" class="btn btn-secondary mt-6 w-full justify-center">Ver GitHub</a>
+                            <h3 class="text-xl font-bold text-white font-mono mt-4">BotScrapper - JobStackPT</h3>
+                            <p class="text-xs text-blue-400 mt-1">Python • PostgreSQL • Github Actions </p>
+                            <p class="mt-4 text-sm text-gray-300" data-i18n="p2_desc"> Bot agregador de ofertas de emprego usando Python, GitHub Actions e Supabase (PostgreSQL). 
+                                O bot pesquisa em várias plataformas por vagas e oportunidades de emprego na área das Tecnologias de Informação em Portugal.</p>
+                            <button class="btn btn-secondary mt-6 w-full justify-center project-preview-btn" data-i18n="btn_details">Ver Detalhes</button>
                         </div>
 
-                        <!-- Project 3 Dummy -->
-                        <div class="swiper-slide glass-card portfolio-card">
+                        <div class="swiper-slide glass-card portfolio-card" data-repo="https://github.com/Migueljfc/stockAPI" data-live="https://app.swaggerhub.com/apis-docs/Resellr/StockAPI/1.0.0">
                             <div class="portfolio-img-stub">
-                                <i data-lucide="app-window" class="text-gray-500"
-                                    style="width: 48px; height: 48px;"></i>
+                            <img src="assets/img/portfolio/project3.png" alt="StockAPI" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
                             </div>
-                            <h3 class="text-xl font-bold text-white font-mono mt-4">Dashboard Analítico</h3>
-                            <p class="text-xs text-blue-400 mt-1">Vue.js • Python</p>
-                            <p class="mt-4 text-sm text-gray-300">Um dashboard construído para demonstrar extração e
-                                visualização de dados via scripts baseados em bibliotecas Python.</p>
-                            <a href="#" class="btn btn-secondary mt-6 w-full justify-center">Ver GitHub</a>
+                            <h3 class="text-xl font-bold text-white font-mono mt-4">API Stock</h3>
+                            <p class="text-xs text-blue-400 mt-1">Python • Docker • MariaDB • FastAPI • Kubernets</p>
+                            <p class="mt-4 text-sm text-gray-300" data-i18n="p3_desc">Microsserviço responsável pela gestão de stock. Funciona como
+                                 um serviço independente que proporciona uma gestão integrada de produtos, categorias e subcategorias, permitindo que outros componentes do sistema 
+                                 interajam com os dados de stock de forma eficiente e escalavel.</p>
+                            <button class="btn btn-secondary mt-6 w-full justify-center project-preview-btn" data-i18n="btn_details">Ver Detalhes</button>
                         </div>
 
-                        <!-- Project 4 Dummy -->
-                        <div class="swiper-slide glass-card portfolio-card">
+                        <!-- <div class="swiper-slide glass-card portfolio-card" data-repo="#">
                             <div class="portfolio-img-stub">
                                 <i data-lucide="bot" class="text-gray-500" style="width: 48px; height: 48px;"></i>
                             </div>
@@ -406,11 +467,10 @@
                             <p class="text-xs text-blue-400 mt-1">Python • OpenAI</p>
                             <p class="mt-4 text-sm text-gray-300">Assistente virtual integrado com as LLMs de ponta para
                                 auxiliar o estudo iterativo no ecossistema académico.</p>
-                            <a href="#" class="btn btn-secondary mt-6 w-full justify-center">Ver GitHub</a>
+                            <button class="btn btn-secondary mt-6 w-full justify-center project-preview-btn">Ver Detalhes</button>
                         </div>
 
-                        <!-- Project 5 Dummy -->
-                        <div class="swiper-slide glass-card portfolio-card">
+                        <div class="swiper-slide glass-card portfolio-card" data-repo="#">
                             <div class="portfolio-img-stub">
                                 <i data-lucide="blocks" class="text-gray-500" style="width: 48px; height: 48px;"></i>
                             </div>
@@ -418,11 +478,10 @@
                             <p class="text-xs text-blue-400 mt-1">Solidity • Web3</p>
                             <p class="mt-4 text-sm text-gray-300">Testbench para uma plataforma eleitoral impossível de
                                 adulterar que emite os votos estáticos na rede Ethereum.</p>
-                            <a href="#" class="btn btn-secondary mt-6 w-full justify-center">Ver GitHub</a>
+                            <button class="btn btn-secondary mt-6 w-full justify-center project-preview-btn">Ver Detalhes</button>
                         </div>
 
-                        <!-- Project 6 Dummy -->
-                        <div class="swiper-slide glass-card portfolio-card">
+                        <div class="swiper-slide glass-card portfolio-card" data-repo="#">
                             <div class="portfolio-img-stub">
                                 <i data-lucide="activity" class="text-gray-500" style="width: 48px; height: 48px;"></i>
                             </div>
@@ -430,11 +489,10 @@
                             <p class="text-xs text-blue-400 mt-1">React Native • Node.js</p>
                             <p class="mt-4 text-sm text-gray-300">Ferramenta mobile completa de acompanhamento de
                                 equipas focada em relatórios físicos, treinos e controlo disciplinar.</p>
-                            <a href="#" class="btn btn-secondary mt-6 w-full justify-center">Ver GitHub</a>
+                            <button class="btn btn-secondary mt-6 w-full justify-center project-preview-btn">Ver Detalhes</button>
                         </div>
 
-                        <!-- Project 7 Dummy -->
-                        <div class="swiper-slide glass-card portfolio-card">
+                        <div class="swiper-slide glass-card portfolio-card" data-repo="#">
                             <div class="portfolio-img-stub">
                                 <i data-lucide="gamepad-2" class="text-gray-500" style="width: 48px; height: 48px;"></i>
                             </div>
@@ -442,11 +500,10 @@
                             <p class="text-xs text-blue-400 mt-1">C++ • SDL2</p>
                             <p class="mt-4 text-sm text-gray-300">Arquitetura crua construída a partir do zero em C com
                                 renderização low-level otimizada por hardware 2D clássico.</p>
-                            <a href="#" class="btn btn-secondary mt-6 w-full justify-center">Ver GitHub</a>
+                            <button class="btn btn-secondary mt-6 w-full justify-center project-preview-btn">Ver Detalhes</button>
                         </div>
 
-                        <!-- Project 8 Dummy -->
-                        <div class="swiper-slide glass-card portfolio-card">
+                        <div class="swiper-slide glass-card portfolio-card" data-repo="#">
                             <div class="portfolio-img-stub">
                                 <i data-lucide="file-search" class="text-gray-500"
                                     style="width: 48px; height: 48px;"></i>
@@ -455,11 +512,10 @@
                             <p class="text-xs text-blue-400 mt-1">Go • Kafka</p>
                             <p class="mt-4 text-sm text-gray-300">Monitor multi-tópico de concorrência ultra-massiva
                                 feito em Go, desenhado para absorver fluxos colossais de logs de rede.</p>
-                            <a href="#" class="btn btn-secondary mt-6 w-full justify-center">Ver GitHub</a>
+                            <button class="btn btn-secondary mt-6 w-full justify-center project-preview-btn">Ver Detalhes</button>
                         </div>
 
-                        <!-- Project 9 Dummy -->
-                        <div class="swiper-slide glass-card portfolio-card">
+                        <div class="swiper-slide glass-card portfolio-card" data-repo="#">
                             <div class="portfolio-img-stub">
                                 <i data-lucide="shopping-cart" class="text-gray-500"
                                     style="width: 48px; height: 48px;"></i>
@@ -468,11 +524,10 @@
                             <p class="text-xs text-blue-400 mt-1">C# • .NET</p>
                             <p class="mt-4 text-sm text-gray-300">Ecossistema base de faturação robusto e modular de
                                 gestão de armazém escalável assente com JWT.</p>
-                            <a href="#" class="btn btn-secondary mt-6 w-full justify-center">Ver GitHub</a>
+                            <button class="btn btn-secondary mt-6 w-full justify-center project-preview-btn">Ver Detalhes</button>
                         </div>
 
-                        <!-- Project 10 Dummy -->
-                        <div class="swiper-slide glass-card portfolio-card">
+                        <div class="swiper-slide glass-card portfolio-card" data-repo="#">
                             <div class="portfolio-img-stub">
                                 <i data-lucide="puzzle" class="text-gray-500" style="width: 48px; height: 48px;"></i>
                             </div>
@@ -480,9 +535,9 @@
                             <p class="text-xs text-blue-400 mt-1">Javascript • Chrome API</p>
                             <p class="mt-4 text-sm text-gray-300">Extensão leve de navegador com scripts injetáveis
                                 dedicada à automação de mineração e parsing de metadados HTML.</p>
-                            <a href="#" class="btn btn-secondary mt-6 w-full justify-center">Ver GitHub</a>
+                            <button class="btn btn-secondary mt-6 w-full justify-center project-preview-btn">Ver Detalhes</button>
                         </div>
-
+ -->
                     </div>
 
                     <!-- Navigation Arrows -->
@@ -502,7 +557,7 @@
                     <div class="section-tag font-mono">&lt;section id="contact"&gt;</div>
                     <h2 class="section-title">
                         <span class="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent"
-                            style="-webkit-background-clip: text;">Contacto</span>
+                            style="-webkit-background-clip: text;" data-i18n="contact_sec_title">Contacto</span>
                     </h2>
                 </div>
 
@@ -514,7 +569,7 @@
                                 <i class="bx bx-envelope"></i>
                             </div>
                             <div>
-                                <h4 class="font-bold text-white font-mono">Email</h4>
+                                <h4 class="font-bold text-white font-mono" data-i18n="contact_email_title">Email</h4>
                                 <p class="text-sm text-gray-400 m-0">miguel.f.cabral@hotmail.com</p>
                             </div>
                         </div>
@@ -525,29 +580,64 @@
                                 <i class="bx bx-map"></i>
                             </div>
                             <div>
-                                <h4 class="font-bold text-white font-mono">Localização</h4>
-                                <p class="text-sm text-gray-400 m-0">Aveiro, Portugal</p>
+                                <h4 class="font-bold text-white font-mono" data-i18n="contact_loc_title">Localização
+                                </h4>
+                                <p class="text-sm text-gray-400 m-0" data-i18n="contact_loc_val">Aveiro, Portugal</p>
                             </div>
                         </div>
                     </div>
 
                     <div class="glass-card">
-                        <form action="https://formsubmit.co/3bf70c7d243e2a10589d40e6db1d77c5" method="post"
-                            class="flex flex-col gap-4">
+                        <form id="contactForm" class="flex flex-col gap-4">
+                            <input type="hidden" name="_captcha" value="false">
+                            <input type="hidden" name="_template" value="table">
                             <div class="grid-cols-2 gap-4">
-                                <input type="text" name="name" placeholder="Name" required class="font-mono">
-                                <input type="email" name="email" placeholder="Email" required class="font-mono">
+                                <input type="text" name="name" placeholder="Nome" required class="font-mono"
+                                    id="i18n-name">
+                                <input type="email" name="email" placeholder="Email" required class="font-mono"
+                                    id="i18n-email">
                             </div>
-                            <input type="text" name="subject" placeholder="Subject" required class="font-mono">
-                            <textarea name="message" rows="5" placeholder="System.out.print(\" Message...\");" required
-                                class="font-mono"></textarea>
-                            <button type="submit" class="btn btn-primary justify-center mt-2 w-full">Send
-                                Message</button>
+                            <input type="text" name="subject" placeholder="Assunto" required class="font-mono"
+                                id="i18n-subject">
+                            <textarea name="message" rows="5" placeholder="Mensagem..." required
+                                class="font-mono" id="i18n-msg"></textarea>
+                            <button type="submit" id="contactSubmitBtn" class="btn btn-primary justify-center mt-2 w-full"
+                                data-i18n="contact_btn">Enviar Mensagem</button>
+                            <p id="contactFeedback" class="font-mono text-sm text-center mt-2" style="display:none;"></p>
                         </form>
                     </div>
                 </div>
             </div>
         </section>
+
+        <!-- Project Preview Modal -->
+        <div id="projectModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:9999; align-items:center; justify-content:center;">
+            <!-- Backdrop -->
+            <div id="modalBackdrop" style="position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px);"></div>
+            <!-- Modal Content -->
+            <div id="modalContent" style="position:relative; width:90%; max-width:1000px; max-height:90vh; background:#111827; border:1px solid #374151; border-radius:12px; overflow:hidden; display:flex; flex-direction:column; box-shadow: 0 25px 60px rgba(0,0,0,0.6);">
+                <!-- Modal Header -->
+                <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 20px; border-bottom:1px solid #374151; flex-shrink:0;">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <div style="width:12px; height:12px; border-radius:50%; background:#ef4444;"></div>
+                        <div style="width:12px; height:12px; border-radius:50%; background:#eab308;"></div>
+                        <div style="width:12px; height:12px; border-radius:50%; background:#22c55e;"></div>
+                        <span id="modalTitle" style="margin-left:12px; font-family:'JetBrains Mono',monospace; font-size:0.85rem; color:#9ca3af;"></span>
+                    </div>
+                    <button id="modalClose" style="background:transparent; border:none; outline:none; color:#9ca3af; font-size:1.5rem; cursor:pointer; line-height:1; padding:4px 8px; transition: color 0.2s;" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#9ca3af'">✕</button>
+                </div>
+                <!-- Preview iframe -->
+                <div style="flex:1; min-height:0; position:relative; background:#0a0a0a;">
+                    <div id="modalLoader" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:#60a5fa; font-family:'JetBrains Mono',monospace; font-size:0.85rem;" data-i18n="modal_loading">Carregando preview...</div>
+                    <iframe id="modalIframe" style="width:100%; height:100%; min-height:450px; border:none; background:#0a0a0a;" sandbox="allow-scripts allow-same-origin allow-popups"></iframe>
+                </div>
+                <!-- Modal Footer Buttons -->
+                <div id="modalFooter" style="display:flex; align-items:center; justify-content:center; gap:12px; padding:16px 20px; border-top:1px solid #374151; flex-shrink:0;">
+                    <a id="modalRepoBtn" href="#" target="_blank" class="btn btn-secondary" style="text-decoration:none; font-size:0.85rem;" data-i18n="modal_repo">Repositório</a>
+                    <a id="modalLiveBtn" href="#" target="_blank" class="btn btn-primary" style="text-decoration:none; font-size:0.85rem; display:none;" data-i18n="modal_live">Abrir WebApp</a>
+                </div>
+            </div>
+        </div>
 
         <!-- Footer -->
         <footer class="py-8 relative z-50">
@@ -573,7 +663,7 @@
         // Init Lucide Icons
         lucide.createIcons();
     </script>
-
+    <script src="assets/js/translations.js"></script>
     <script src="assets/js/main.js"></script>
 </body>
 
