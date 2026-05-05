@@ -123,6 +123,14 @@ window.onload = function() {
                 });
 
                 if (res.ok) {
+                    // Track conversion in Google Analytics
+                    if (typeof gtag === 'function') {
+                        gtag('event', 'generate_lead', {
+                            'event_category': 'contact',
+                            'event_label': 'portfolio_form'
+                        });
+                    }
+
                     feedback.textContent = currentLang === 'pt' ? '✓ Mensagem enviada com sucesso!' : '✓ Message sent successfully!';
                     feedback.style.color = '#22c55e';
                     feedback.style.display = 'block';
